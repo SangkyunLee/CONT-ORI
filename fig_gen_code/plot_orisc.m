@@ -63,8 +63,8 @@ for iexp = 1:3
         %----------
 
 
-        %CLIST = find(Mev>thr & rb>-1);
-        CLIST = find(Mev>thr & a<2 );
+        CLIST = find(Mev>thr & rb>-1);
+        %CLIST = find(Mev>thr & a<2 );
         nC= length(CLIST);
         sc(k).a = a(CLIST);
         sc(k).b = b(CLIST);
@@ -101,14 +101,14 @@ if bdisp
     figure; hist(a,-3:0.1:4);
     h = findobj(gca,'Type','patch');
     set(h,'FaceColor','w','EdgeColor','k')
-    set(gca,'FontSize',20,'XTick',[0 1 2]);
+    set(gca,'FontSize',22,'XTick',[0 1 2],'linewidth',2);
     xlim([-0.1 4]); box off
 
     figure; hist(rb,-3:0.1:3)
     h = findobj(gca,'Type','patch');
     set(h,'FaceColor','w','EdgeColor','k')
-    set(gca,'FontSize',20,'XTick',[-1 0 1]);
-    set(gca,'FontSize',20,'YTick',[0:100:300]);
+    set(gca,'FontSize',22,'XTick',[-1 0 1],'linewidth',2);
+    set(gca,'FontSize',22,'YTick',[0:100:300]);
     xlim([-1 1])
     box off
 
@@ -119,7 +119,7 @@ if bdisp
     hold on; plot([0 3],[0 0],'k--')
     hold on; plot([1 1],[-1 1],'k--')
     xlim([-0.1 5]); box off
-    set(gca,'FontSize',20,'XTick',[0 1 2]);
+    set(gca,'FontSize',22,'XTick',[0 1 2],'linewidth',2);
     set(gca,'YTick',[-0.5 0 0.5]);
 
 end

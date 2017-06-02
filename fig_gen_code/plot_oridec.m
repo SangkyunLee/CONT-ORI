@@ -4,23 +4,28 @@ close all;
 inxcell = 1;
 
 
-M{1} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AN\thr5\AN1-16SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat');
-M{2} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AN\thr5\AN17-22SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat')
-M{3} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AWAKE_EYE\thr5_eyethr_xy1_p1\SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat')
+% M{1} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AN\thr5\AN1-16SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat');
+% M{2} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AN\thr5\AN17-22SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat')
+% M{3} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AWAKE_EYE\thr5_eyethr_xy1_p1\SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat')
 
-M{1} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AN\thr5\AN1-16SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat');
-M{2} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AN\thr5\AN17-22SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat')
-M{3} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AWAKE_EYE\thr5_eyethr_xy1_p1\SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat')
 
 % M{1} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS\AN\thr5\SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat');
 % M{2} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS\AN\thr5\AN17-22SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat')
 % M{3} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS\AWAKE_EYE\thr5_eyethr_xy0p5_p100\SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat')
 
+M{1} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AN\thr5\AN1-16SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat');
+M{2} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AN\thr5\AN17-22SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat')
+M{3} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AWAKE_EYE\thr5_eyethr_xy1_p1\SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat')
+
+
+% M{1} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AN\thr5\SHUFFLE_AN1-16SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat');
+% M{2} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AN\thr5\SHUFFLE_AN17-22SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat')
+% M{3} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AWAKE_EYE\thr5_eyethr_xy1_p1\SHUFFLE_SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat')
 
 
 %-- for common training 
-comcont{1,1} = {100,100}; comcont{1,2} = {100, 40};
-comcont{2,1} = {40,40}; comcont{2,2} = {40, 100};
+% comcont{1,1} = {100,100}; comcont{1,2} = {100, 40};
+% comcont{2,1} = {40,40}; comcont{2,2} = {40, 100};
 
 
 %---- for common testing
@@ -102,13 +107,16 @@ for i=dispord
     Y=[Y y];
 end
 plot(X,Y,'.','MarkerSize',20);
-lgdstr={'\Delta60','\Delta90','\Delta30','\Delta100(105)','\Delta40(45)','\Delta10(15)'}
-[legend_h,object_h,plot_h,text_strings] =legend(lgdstr(dispord),'color','none');
+%-average mean acc
+%plot(mean(X,2),mean(Y,2),'.','MarkerSize',20);
+
+%lgdstr={'\Delta60','\Delta90','\Delta30','\Delta100(105)','\Delta40(45)','\Delta10(15)'}
+%[legend_h,object_h,plot_h,text_strings] =legend(lgdstr(dispord),'color','none');
 % legend boxoff
 hold on;
 %plot([min(X(:)) max(X(:))],[min(X(:)) max(X(:))],'k')
-plot([0.45 1],[0.45 1],'k','LineWidth',2)
-set(gca,'FontSize',20)
+plot([0.45 1],[0.45 1],'k','LineWidth',1.5)
+set(gca,'FontSize',22,'linewidth',2)
 set(gca,'XTick',[0.6 0.8 1])
 set(gca,'YTick',[0.6 0.8 1])
 
@@ -118,11 +126,17 @@ xlim([0.45 1])
 ylim([0.45 1])
 
 D1a =cell2mat(D1(icont,:));
-D1a=[ D1a(:,1:2:end); D1a(:,2:2:end)]; 
+C1 =D1a(:,1:2:end);
+C2 = D1a(:,2:2:end);
+D1a=[ C1(:) C2(:)]; 
 
-[p,table,stats] = anova2(D1a,size(D1a,1)/2);
+%[p,table,stats] = anova2(D1a,size(D1a,1)/6);
 % [c,m,h,nms] = multcompare(stats, 'estimate','column')
-% 
+[p,table,stats] = friedman(D1a,size(D1a,1)/6);
+
+
+signrank(mean(X,2),mean(Y,2))
+
 % 
 % [p,table,stats] = anova1((X-Y));
 % [c,m,h,nms] = multcompare(stats)
@@ -177,12 +191,21 @@ set(gca,'XTicklabel','100%-100%|40%-40%')
 hold on;
 errorbar( model_series, model_error, 'k', 'linestyle', 'none','linewidth',2);
 
-set(gca,'FontSize',20);
+set(gca,'FontSize',22,'linewidth',2);
 xlim([0.5 2.5])
 ylim([0.5 1])
 box off
 
 signrank(Dm(:,1),Dm(:,2));
+
+
+%% scatterplot for average acc across directions
+
+
+
+
+
+
 
 %%
 % clear all

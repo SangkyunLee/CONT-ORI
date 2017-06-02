@@ -134,15 +134,15 @@ for ises = seslist
             
             fprintf('ises: %d, icont:%d, icomp:%d\n',ises,icont, icomp);
 
-%             if DEC_M(icont,icomp0,ises)~=0
-%                 fprintf('ises: %d done.\n',ises);
-%                 continue;
-%             end
-
-            if ~isempty(WEIGHT{icont,icomp0,ises}) && ~isempty(SAMPLE_INX{icont,icomp0,ises})
+            if DEC_SELCELL(1,icont,icomp0,ises)~=0
                 fprintf('ises: %d done.\n',ises);
                 continue;
             end
+
+%             if ~isempty(WEIGHT{icont,icomp0,ises}) && ~isempty(SAMPLE_INX{icont,icomp0,ises})
+%                 fprintf('ises: %d done.\n',ises);
+%                 continue;
+%             end
             
             
             

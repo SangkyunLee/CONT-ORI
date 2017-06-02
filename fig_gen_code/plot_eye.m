@@ -38,7 +38,7 @@ motionthr.dist_twin_thr = 1;
         
 %------------------ load rotaroad
 iscan =1;
-channel=[3 5];
+channel=[3 5];twin=1
 files = CO.scans(iscan).Params.files;
 DAQpath = fullfile(CO.session_path,files.subpath_xml);
 FMOTpath = DAQpath;
@@ -98,7 +98,7 @@ for i = 1 : length(k)
     %therefore, here I present only for stim time
     t2 = t(ts2(4:end-3));
     
-    fill_rec(t2([1 end]),[ma1 ma1],[ma2 ma2],[0.9 0.9 0.9] );
+    fill_rec(t2([1 end]),[ma1 ma1],[ma2 ma2],[0.6 0.6 0.6] );
 end
 
 rota0 =0.7;
@@ -108,7 +108,7 @@ plot(tbase,zeros(1,length(tbase)),'k');
 plot(t(ts),xy0(ts,1)*u,'r','LineWidth',1.5); %eye x,y
 plot(t(ts),xy0(ts,2)*u,'b','LineWidth',1.5); %eye x,y
 plot(t(ts),P(ts)*u,'k','LineWidth',1.5); %pupil radius
-plot(t_rota(inx_rota),dist_twin(inx_rota)/40+rota0,'y','LineWidth',1.5) % rotaroad
+plot(t_rota(inx_rota),dist_twin(inx_rota)/40+rota0,'color',[255 207 0]/255,'LineWidth',1.5) % rotaroad
 
 
 %--- plot sample point of eyeframe
@@ -119,33 +119,24 @@ set(gca,'FontSize',16);
 xlim([25 75])
 
 
+%--- plot entire t-series
+ figure('Position', [680 678 500 300]); hold on;
+invalid = P==0;
+xy0(invalid,:)=NaN;
+P(invalid)=NaN;
+ts=1:length(t);
+inx_rota=1:length(t_rota);
+rota0 =0.7;
+tbase = t(ts(1):ts(end));
+plot(tbase,rota0*ones(1,length(tbase)),'k');
+plot(tbase,zeros(1,length(tbase)),'k');
+plot(t(ts),xy0(ts,1)*u,'r','LineWidth',1.5); %eye x,y
+plot(t(ts),xy0(ts,2)*u,'b','LineWidth',1.5); %eye x,y
+plot(t(ts),P(ts)*u,'k','LineWidth',1.5); %pupil radius
+plot(t_rota(inx_rota),dist_twin(inx_rota)/40+rota0,'color',[255 207 0]/255,'LineWidth',1.5) % rotaroad
+xlim([0 400]);
+ylim([-0.5 2])
 
+xlim([0 200]);
+ylim([-0.5 1.2])
 %---------- figure- summary statistics
-%--- apply only sccade detection
-eyepar.lmovthr=2;
-eyepar.dxythr=100;
-eyepar.puppar.ls = 100;
-eyepar.puppar.us = 100;
-CO = CO.set_eyepar(eyepar);
-eyexy = CO.eye;
-
-i=2
-Params = CO.scans(i).Params;
-timeinfo = CO.scans(i).timeinfo;
-Params.files.mainpath = CO.session_path;
-[XYi, Ri, dPi, PP, vfinxi] = TP.get_eyepar_trial(Params,timeinfo);
-eye(i).xy = XYi;    
-eye(i).r = Ri;    
-eye(i).PP = PP;
-eye(i).vf_trial = vfinxi;
-dfX = dPi;                
-
-eye1 = TP.detect_lmov(eye(i),dfX, 2);
-
-PP = eye(2).PP;
-t = (1:length(PP))/30;
-inxt = 4000:12000;
-XY0 = bsxfun(@minus,PP(:,1:2), median(PP(:,1:2),1));
-figure; hold on;
-plot(t(inxt),XY0(inxt,1)*u,'r');
-plot(t(inxt),XY0(inxt,2)*u,'b');

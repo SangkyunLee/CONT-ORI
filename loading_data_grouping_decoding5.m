@@ -34,7 +34,7 @@ elseif idtype==3
 else
     path_list =METADATA_CONT_ORI (exp_type{idtype},mainpath1, mainpath2,mainpath3);
 end
-ctm = 0.7;
+ctm = 0.6;
 
 if idtype==1,
     fndata=sprintf('DISK_Cont-ORI_ctm%0.2f_HPF100_tau0.85_F0-10.0sigma.mat',ctm) ;

@@ -28,13 +28,14 @@ if idtype==1 || idtype==4,
 else
     path_list =METADATA_CONT_ORI (exp_type{idtype},mainpath1, mainpath2,mainpath3);
 end
-ctm = 0.6;
+ctm = 0.0;
 
 if idtype==1,
     % session 1-8
-    fndata=sprintf('DISK_GRATING_ctm%0.2f_HPF0_tau0.85_F0-2.0sigma.mat',ctm) ; 
-    % session 11 12 15 16
-%     fndata=sprintf('DISK_Cont-ORI_ctm%0.2f_HPF100_tau0.85_F0-10.0sigma.mat',ctm) ;
+    %fndata=sprintf('DISK_GRATING_ctm%0.2f_HPF0_tau0.85_F0-2.0sigma.mat',ctm) ; 
+    % session 11 12 15 16 17:22
+    fndata=sprintf('DISK_Cont-ORI_ctm%0.2f_HPF100_tau0.85_F0-10.0sigma.mat',ctm) ;
+    
 % fndata=sprintf('RIM_Cont-ORI_ctm%0.2f_HPF100_tau0.85_F0-10.0sigma.mat',ctm) ;
 % fndata=sprintf('DISK_Cont-ORI_ctm%0.2f_HPF100_tau0.85_F0-3.0sigma.mat',ctm) ;
 
@@ -51,7 +52,7 @@ end
 cell_sel_method = 'UNION_CONTRSP';
 datatype=['DATA_DISK_' cell_sel_method];
 % datatype=['DATA_RIM_' cell_sel_method];
-thr_str ='thr0';
+thr_str ='thr5';
 
 
 fnsave_str =sprintf('%s_ctm%0.2f',datatype,ctm); 
@@ -72,9 +73,9 @@ switch exp_type{idtype}
         fndata = fndats;
         fndata([1 3]) ={['navg2' fndata{1}]};
     case {'AN'}        
-        selcontrast=[100 40 20];
+        %selcontrast=[100 40 20];
         %%- when idata=17:22
-%         selcontrast=[100 40];
+        selcontrast=[100 40];
         
     case{'AN_FULLORI'}
         selcontrast=[100 40];
@@ -89,7 +90,7 @@ end
 % else
 %     selcontrast=[100 40 20];
 % end
-visual_resp_thr=1.00;
+visual_resp_thr=1.05;
 evtsort={'Contrast','Orientation'};
 
 
@@ -117,7 +118,7 @@ param4cellselect.evtsort=evtsort;
 
 
 
-seslist =[1:8]% 11 12 15 16 (17:22)]
+seslist =[21:22]% 11 12 15 16 (17:22)]
 
 
 

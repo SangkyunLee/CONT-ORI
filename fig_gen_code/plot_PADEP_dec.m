@@ -1,7 +1,7 @@
 clear all
 close all;
 
-inxcell = 3;
+inxcell = 1;
 
 
 M{1} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AN\thr5\PADEP_AN1-16SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat');
@@ -66,7 +66,7 @@ end %inxcell0
 %------------------------
 close all
 
-incell = 5 % incell=6: including all cells
+incell = 6 % incell=6: including all cells
 ps = NaN*ones(4,4);
 macc = cell(4);
 for mode =[1 2 3 4]
@@ -88,23 +88,25 @@ for mode =[1 2 3 4]
     end
 
     figure; hold on;
-    clrs={'r','g','b','y'}
+    %clrs={'r','g','b','y'}
+    clrs={'r','g','b',[255 207 0]/255}
+    %clrs={[0 0 143]/255,[0 223 255]/255,[255 207 0]/255,[127 0 0]/255}
     x=cell2mat(Do(incell,inx_set(1)));
     macc{mode,1}=x;
 
     bfc =3; % bonferroni correction
-    %lgdstr = cell(1,4);
+    lgdstr = cell(1,4);
     for i = 2 : 4    
         y = cell2mat(Do(incell,inx_set(i)));
         ps(mode,inx_set0(i)) = signrank(x(:),y(:))*bfc;
         
         plot(x,y,'.','Color',clrs{inx_set0(i)},'MarkerSize',20);         
         macc{mode,i}=y;
-        %lgdstr{i}=M{1}.comcont{inx_set(i)}{1};
+        lgdstr{i}=M{1}.comcont{inx_set(i)}{1};
     end
     plot([0.45 1],[0.45 1],'k','LineWidth',2)
 
-    set(gca,'FontSize',20);
+    set(gca,'FontSize',22,'linewidth',2);
     set(gca,'XTick',[0.6 0.8 1]);
     set(gca,'YTick',[0.6 0.8 1]);
     box off;
@@ -121,6 +123,72 @@ ps1=ps(:,[1 3 2 4]);% to align ps to 100,H|100,L|40,H|40,L
 % ps1(ps1(:)>0.05)=Inf;
 % 
 % psall(:,:,incell)=ps1;
+
+
+
+close all
+
+for mode = 1 : 4
+    
+    switch mode
+        case {1}
+            inx_set0 = [0 4 8 12]/4 +1; %100H      
+            in2 = [1 3 2 4];
+        case {2}
+            inx_set0 =[8 0 4 12]/4 + 1; %100L  
+            in2 = [1 2 3 4];
+        case {3}
+            inx_set0 = [4 0 8 12]/4 + 1; %40H     
+            in2 = [1 4 2 3];
+        case {4}
+            inx_set0 = [12 0 4 8]/4 + 1; %40L
+            in2 = [1 3 2 4];
+    end
+%     in2=1:4;
+
+    x = cell2mat(macc(mode,in2));
+
+    sc = 0.40;
+    figure('position',[300 300 560/1.5*sc 420*sc]); hold on;
+    mx = mean(x,1);
+    sx = std(x,0,1)/sqrt(size(x,1));
+%     for i =2 :4
+%         y=[mx(1) mx(i)];
+%         plot(y,'.-','Color',clrs{inx_set0(i)},'MarkerSize',20,'linewidth',3);    
+%     end
+    
+    for i =2 :4
+        y=mx(i)-mx(1);
+        errorbar(i-1,y,sx(i),'.-','Color',clrs{inx_set0(in2(i))},'MarkerSize',26,'linewidth',4);    
+    end
+    
+%     if mode==1
+%         ylim([0.8 0.9])
+%         set(gca,'YTick',[0.8 0.9]);
+%     elseif mode ==2
+%         ylim([0.77 0.86])
+%         set(gca,'YTick',[0.78 0.84]);    
+%     elseif mode ==3
+%         ylim([0.77 0.83])
+%         set(gca,'YTick',[0.77 0.80]);
+%     elseif mode ==4
+%         ylim([0.70 0.80])
+%         set(gca,'YTick',[0.7 0.80]);
+%     end
+    
+    xlim([0.7 3.3])
+    ylim([-0.1 0.1])
+    set(gca,'XTick',[1 2 3],'xticklabel',[]);    
+    
+    set(gca,'FontSize',22,'linewidth',2);
+    box off
+    
+end
+
+
+
+
+
 
 
 close all
@@ -151,7 +219,8 @@ for mode = 1 : 4
     strx = M{1}.comcont(inx_set)
     str = cell(1,4);
     for i=1:4
-    str{i}=strx{i}{1};
+        %str{i}=strx{i}{1};
+        str{i}=[strx{i}{1}(1:end-2) strx{i}{1}(end)];
     end
     
     x = cell2mat(macc(mode,in2));
@@ -163,7 +232,7 @@ for mode = 1 : 4
     set(gca,'XTick',1:4);
     set(gca,'XTickLabel',str);
     set(gca,'YTick',[0.6 0.8 1]);
-    set(gca,'FontSize',20);
+    set(gca,'FontSize',22,'linewidth',2);
     
 end
 
@@ -210,9 +279,32 @@ for mode =[1 2 3 4]
     
     
 %     [p,table,stats]  =anova2(cell2mat(a),28);
-%     [c,m,h,nms] = multcompare(stats,'estimate','column','alpha',1e-15);
+%     [c,m,h,nms] = multcompare(stats,'estimate','column','alpha',1e-10);
+
+%     [p,table,stats]  =friedman(cell2mat(a(end,:)),28);
+%     [c,m,h,nms] = multcompare(stats,'alpha',0.05,'ctype','lsd');
     
-    clrs={'r','g','b','y'}
+    for it=1:5
+    [p,table,stats]  =kruskalwallis(cell2mat(a(it,:)));
+    [c,m,h,nms] = multcompare(stats,'alpha',0.01);
+    end
+    
+%     b=cell2mat(a);
+%     ps =NaN*ones(3);
+%     FWE=3
+%     for ii=1:2
+%         for jj=ii+1:3
+%             [p,table,stats]  =friedman(b(:,[ii,jj]),28);
+%             ps(ii,jj)=p*FWE;
+%         end
+%     end
+    %mode=1,2,4 P<1e-10
+    %mode3= p<5e-4, <1e-6
+
+    
+    %clrs={'r','g','b','y'}
+    clrs={'r','g','b',[255 207 0]/255}
+    
     sig = cellfun(@mean,a,'UniformOutput',false);
     sig = cell2mat(sig);
     nrep = size(a{1,1},1);
@@ -223,19 +315,20 @@ for mode =[1 2 3 4]
     for i=1:3
         errorbar([1 3 5 10 20],sig(:,i),err(:,i),'linewidth',2,'Color',clrs{inx_set0(i+1)});
     end
-    set(gca,'FontSize',20);
+    set(gca,'FontSize',22,'linewidth',2);
+    set(gca,'xtick',[1 5 10 15 20]);
 %     axis equal
     xlim([-1 21])
     ylim([-15 5])
 end
 
 %generation of figure legend
-% figure; hold on
-% for i=1:4
-%     plot(i,i,'linewidth',2,'Color',clrs{i});
-% end
-% legend({'100,H','40,H','100,L','40,L'},'Location','northwest')
-% set(gca,'FontSize',20);
+figure; hold on
+for i=[1 3 2 4]
+    plot(i,i,'.','linewidth',2,'Color',clrs{i},'MarkerSize',20);
+end
+legend({'100H','100L','40H','40L'},'Location','northwest')
+set(gca,'FontSize',22);
 
 
 %% plot mean population activity depending on contrast and pouplation levels
@@ -289,7 +382,7 @@ model_series = mean(K,3);
 model_error = std(K,0,3)/sqrt(size(K,3));
 h = bar(model_series);
 set(h,'BarWidth',1);    % The bars will now touch each other
-set(gca,'XTicklabel','100,H|100,L|40,H|40,L')
+set(gca,'XTicklabel','100H|100L|40H|40L')
 % lh = legend('-15/-10','0','30','90');
 
 hold on;
@@ -301,15 +394,34 @@ for i = 1:numbars
       x = (1:numgroups) - groupwidth/2 + (2*i-1) * groupwidth / (2*numbars);  % Aligning error bar with individual bar
       errorbar(x, model_series(:,i), model_error(:,i), 'k', 'linestyle', 'none','linewidth',2);
 end
-set(gca,'FontSize',20);
+set(gca,'FontSize',22,'linewidth',2);
 xlim([0.5 4.5])
 box off
 
 %---- get statistics
 K1= permute(K,[3 2 1]);
 K1 = reshape(K1,[size(K1,1)*size(K1,2) size(K1,3)]);
+K2 = reshape(K1, [28 16]);
+vartestn(K2)
 [p,table,stats]  = anova2(K1,28)
 [c,m,h,nms] = multcompare(stats,'estimate','column','alpha',5e-3);
+
+
+K1= permute(K,[3 2 1]);
+K1 = squeeze(mean(K1,2));
+[p,table,stats]  = kruskalwallis(K1)
+[c,m,h,nms] = multcompare(stats,'estimate','column','alpha',1e-2);
+
+% [p,table,stats]  = friedman(K1,28)
+% [c,m,h,nms] = multcompare(stats,'alpha',0.05);
+% ps =NaN*ones(4,4);
+% FWE=6
+% for ii=1:3
+%     for jj=ii+1:4
+%         [p,table,stats]  =friedman(K1(:,[ii,jj]),28);
+%         ps(ii,jj)=p*FWE;
+%     end
+% end
 
 
 
@@ -366,7 +478,7 @@ model_series = mean(K,3);
 model_error = std(K,0,3)/sqrt(size(K,3));
 h = bar(model_series);
 set(h,'BarWidth',1);    % The bars will now touch each other
-set(gca,'XTicklabel','100,H|100,L|40,H|40,L')
+set(gca,'XTicklabel','100H|100L|40H|40L')
 % lh = legend('-15/-10','0','30','90');
 
 hold on;
@@ -378,17 +490,43 @@ for i = 1:numbars
       x = (1:numgroups) - groupwidth/2 + (2*i-1) * groupwidth / (2*numbars);  % Aligning error bar with individual bar
       errorbar(x, model_series(:,i), model_error(:,i), 'k', 'linestyle', 'none','linewidth',2);
 end
-set(gca,'FontSize',20);
+set(gca,'FontSize',22,'linewidth',2);
 xlim([0.5 4.5])
 box off
 ylim([0.6 1])
 %---- get statistics
 K1= permute(K,[3 2 1]);
+K2 = reshape(K1,[size(K1,1) size(K1,2)*size(K1,3)]);
+vartestn(K2)
 K1 = reshape(K1,[size(K1,1)*size(K1,2) size(K1,3)]);
+
+
 [p,table,stats]  = anova2(K1,28)
 [c,m,h,nms] = multcompare(stats,'estimate','column','alpha',5e-2);
 
+K1= permute(K,[3 2 1]);
+K1 = squeeze(mean(K1,2));
+% [p,table,stats]  = kruskalwallis(K1)
+% [c,m,h,nms] = multcompare(stats,'estimate','column','alpha',1e-2);
+vartestn(K1);
+[p,table,stats]  = anova1(K1)
+[c,m,h,nms] = multcompare(stats,'alpha',0.05);
 
+% contrast
+K0 = permute(K,[3 2 1]);
+p = signrank(mean(mean(K0(:,:,1:2),3),2),mean(mean(K0(:,:,3:4),3),2))
+p = signrank(mean(mean(K0(:,:,[1 ]),3),2),mean(mean(K0(:,:,[2 ]),3),2))
+p = signrank(mean(mean(K0(:,:,[3 ]),3),2),mean(mean(K0(:,:,[4 ]),3),2))
+
+
+% ps =NaN*ones(4,4);
+% FWE=6
+% for ii=1:3
+%     for jj=ii+1:4
+%         [p,table,stats]  =friedman(K1(:,[ii,jj]),28);
+%         ps(ii,jj)=p*FWE;
+%     end
+% end
 
 %% measure angle between CPRS(Contrasts-and-population-response-specific) vs non-CPRS
 clear all; close all;
@@ -646,22 +784,26 @@ for isub = 1 : 28
 end
 spread1 = [spread([1 2],:); mean(spread(3:end,:),1)];
         
-hf=figure('Position',[680   578   640   420]);
+
+hf=figure;%('Position',[680   578   600   420]);
 
 model_series =nanmean(spread1,2);
 model_error = nanstd(spread1,0,2)/sqrt(sum(~isnan(ncell)));
 h = bar(model_series);
 set(h,'BarWidth',0.4,'FaceColor',[0.91 0.91 0.91]);    % The bars will now touch each other
-set(gca,'XTicklabel','100,H-100,L|40,H-40,L|Crs. Cont.')
+set(gca,'XTicklabel','100H-100L|40H-40L|Crs. Cont.')
 hold on;
 errorbar( model_series, model_error, 'k', 'linestyle', 'none','linewidth',2);
-set(gca,'FontSize',20);
+set(gca,'FontSize',22,'linewidth',2);
 xlim([0.5 3.5])
 box off        
 
 [p,table,stats]  = anova1(spread1')
 [c,m,h,nms] = multcompare(stats,'estimate','row','alpha',1e-4);
 % 
+
+[p,table,stats] = kruskalwallis(spread1')
+[c,m,h,nms] = multcompare(stats,'alpha',1e-7);
 
 
 %% count franction of cells with ev>0.5

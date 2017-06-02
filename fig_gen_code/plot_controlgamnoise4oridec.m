@@ -133,7 +133,7 @@ figure; hold on;
 plot(Dtmp(:,6),Dtmp(:,4),'.','markersize',20);
 plot([0.5 1],[0.5 1],'k','linewidth',2)
 signrank(Dtmp(:,4),Dtmp(:,6))
-set(gca,'FontSize',20)
+set(gca,'FontSize',22,'linewidth',2)
 set(gca,'XTick',[0.6 0.8 1])
 set(gca,'YTick',[0.6 0.8 1])
 axis equal
@@ -147,7 +147,7 @@ figure; hold on;
 plot(Dtmp(:,6),Dtmp(:,8),'.','markersize',20);
 plot([0.5 1],[0.5 1],'k','linewidth',2)
 signrank(Dtmp(:,5),Dtmp(:,8))
-set(gca,'FontSize',20)
+set(gca,'FontSize',22,'linewidth',2)
 set(gca,'XTick',[0.6 0.8 1])
 set(gca,'YTick',[0.6 0.8 1])
 axis equal

@@ -1,5 +1,5 @@
-clear all
-close all;
+% clear all
+% close all;
 
 
 
@@ -13,9 +13,14 @@ M{2} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AN\thr5\AN1
 M{3} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AWAKE_EYE\thr5_eyethr_xy1_p1\SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat')
 
 
+% M{1} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AN\thr5\SHUFFLE_AN1-16SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat');
+% M{2} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AN\thr5\SHUFFLE_AN17-22SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat')
+% M{3} = load('Z:\data_2photon\matlab_2ndLev\NEW_DECODING_NOBIAS_ZMEAN\AWAKE_EYE\thr5_eyethr_xy1_p1\SHUFFLE_SUBCELL-Xsel_CRSCON_SMLR_L2_ctm0.60.mat')
+% 
+
 %-- for common training 
-comcont{1,1} = {100,100}; comcont{1,2} = {100, 40};
-comcont{2,1} = {40,40}; comcont{2,2} = {40, 100};
+% comcont{1,1} = {100,100}; comcont{1,2} = {100, 40};
+% comcont{2,1} = {40,40}; comcont{2,2} = {40, 100};
 
 
 %---- for common testing
@@ -23,8 +28,8 @@ comcont{1,1} = {100,100}; comcont{1,2} = {40, 100};
 comcont{2,1} = {40,40}; comcont{2,2} = {100, 40};
 
 %---- for common testing with contrast-independence
-comcont{1,1} = {100,100}; comcont{1,2} = {[100 40], 100};
-comcont{2,1} = {40,40}; comcont{2,2} = {[100 40], 40};
+% comcont{1,1} = {100,100}; comcont{1,2} = {[100 40], 100};
+% comcont{2,1} = {40,40}; comcont{2,2} = {[100 40], 40};
 
 
 nc= size(comcont,1);
@@ -186,7 +191,7 @@ fill_rec([1 3 5 10 20 30],CI(1,:)*100,CI(2,:)*100,[0.3 0.3 0.3])
 plot([1 3 5 10 20 30],mean(x)*100,'.-','LineWidth',2,'MarkerSize',20,'Color','k');
 set(gca,'XTick',[1 3 5 10 20 30])
 set(gca,'XTickLabel',{'1','3','5','10','20','all'})
-set(gca,'FontSize',20)
+set(gca,'FontSize',22,'linewidth',2)
 xlim([0 31])
 ylim([-5 0])
 % ylim([-10 5])
@@ -203,8 +208,10 @@ for iori=1:6
 end
 Dec=Dec/6; 
 nrep = size(Dec,1)/6;
-[p,table,stats] = anova2(Dec,nrep);
-[c,m,h,nms] = multcompare(stats,'estimate','column');
+% [p,table,stats] = anova2(Dec,nrep);
+% [c,m,h,nms] = multcompare(stats,'estimate','column');
+[p,table,stats] = friedman(Dec,nrep);
+
 
 Dec1 = reshape(Dec,[nrep 6 2]);
 
@@ -228,7 +235,7 @@ end
 set(gca,'XTick',[1 3 5 10 20 30])
 set(gca,'YTick',[0.6 0.8 1])
 set(gca,'XTickLabel',{'1','3','5','10','20','all'})
-set(gca,'FontSize',20)
+set(gca,'FontSize',22,'linewidth',2)
 xlim([0 31])
 ylim([0.5 1])
 
@@ -243,7 +250,7 @@ figure;
 plot(Dec1(:,ii,1),Dec1(:,ii,2),'.','LineWidth',2,'MarkerSize',20)
 hold on; 
 plot([0.45 1],[0.45 1],'k','LineWidth',2)
-set(gca,'FontSize',20)
+set(gca,'FontSize',22,'linewidth',2)
 set(gca,'XTick',[0.6 0.8 1])
 set(gca,'YTick',[0.6 0.8 1])
 box off
@@ -278,8 +285,8 @@ fill_rec([1 3 5 10 20 30],CI(1,:),CI(2,:),[0.3 0.3 0.3])
 plot([1 3 5 10 20 30],mean(x),'.-','LineWidth',2,'MarkerSize',20,'Color','k');
 set(gca,'XTick',[1 3 5 10 20 30])
 set(gca,'XTickLabel',{'1','3','5','10','20','all'})
-set(gca,'FontSize',20)
-xlim([0 21])
+set(gca,'FontSize',22,'linewidth',2)
+xlim([0 20])
 
 %% plot commonly used cell ratio between contrasts after hard thresholding
 %------- without using probability, select n-cell and calculate the ratio
@@ -398,8 +405,8 @@ fill_rec([1 3 5 10 20 ],CI(1,:),CI(2,:),[0.3 0.3 0.3])
 plot([1 3 5 10 20 ],mean(x),'.-','LineWidth',2,'MarkerSize',20,'Color','k');
 set(gca,'XTick',[1 3 5 10 20 ])
 set(gca,'XTickLabel',{'1','3','5','10','20'})
-set(gca,'FontSize',20)
-xlim([0 21])
+set(gca,'FontSize',22,'linewidth',2)
+xlim([0 20])
 
 
 %% ------------------ plot examples
@@ -418,7 +425,7 @@ luc = length(uc);
 h1= hist(C1,uc);
 h2= hist(C2,uc);
 
-hf=figure('Position',[680   678   660   400]);
+hf=figure;%('Position',[480   478   660   400]);
 bar((1:luc)'*ones(1,2),[h2' h1'],'BarWidth',1);
 xlim([0.5 luc+.5])
 xstr=cell(1,luc);
@@ -426,7 +433,7 @@ xstr=cell(1,luc);
 %     xstr{i}=sprintf('Cell%d',i);
 % end
 % set(gca,'xticklabel',xstr);
-set(gca,'Fontsize',20)
+set(gca,'FontSize',22,'linewidth',2)
 box off
 
 
@@ -443,14 +450,15 @@ for i = 1: luc
 end
 
 
-figure('Position',[680   678   600   450]);
+%figure('Position',[480   678   600   450]);
+figure('Position',[480   678   1300   210]);
 clrs={'r','b'};
 cellist =[ 2 3 9 10];
 mys = zeros(length(cellist),2);
 snrs = zeros(length(cellist),2);
 for i0 = 1:length(cellist)
     i = cellist(i0);
-    subplot(2,2,i0);
+    subplot(1,4,i0);
     hold on;
     for j = 1 :2
         my = O1.mresp(:,j,uc(i));
@@ -466,15 +474,19 @@ for i0 = 1:length(cellist)
     end 
     set(gca,'ytick',[0 0.5 1]);
     set(gca,'ytick',[0 0.5 1]);
-    set(gca,'FontSize',20);
+    set(gca,'FontSize',22,'linewidth',2)
     xlim([-20 100])
     ylim([0 1])
     %tltstr=sprintf('Cell%d,%.2f',i, abs(my(2)-my(3)));
     tltstr=sprintf('Cell%d',i);
     title(tltstr);
+    if i0==1,
+        plot([0 0],[0 1],'k--');
+        plot([30 30],[0 1],'k--');
+    end
+%     axis off
 end
-plot([0 0],[0 1],'k--');
-plot([30 30],[0 1],'k--');
+
 
 
 ratio = h1/100*h2'/100/3
@@ -571,7 +583,7 @@ set(h,'BarWidth',0.4,'FaceColor',[0.91 0.91 0.91]);    % The bars will now touch
 set(gca,'XTicklabel','100|40')
 hold on;
 errorbar( model_series, model_error, 'k', 'linestyle', 'none','linewidth',2);
-set(gca,'FontSize',20);
+set(gca,'FontSize',22,'linewidth',2);
 xlim([0.5 2.5])
 box off      
 
@@ -586,7 +598,7 @@ figure; hold on;
 plot(rF','k.','linewidth',2);
 plot(median(rF),'x','MarkerSize',20)
 xlim([0.5 2.5])
-set(gca,'FontSize',20);
+set(gca,'FontSize',22);
 set(gca,'XTick',[1 2])
 set(gca,'XTicklabel','|')
 

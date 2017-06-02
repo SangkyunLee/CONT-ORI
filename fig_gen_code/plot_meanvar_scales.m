@@ -16,10 +16,10 @@ parinx =1 % scale
 thr = 0.5
 thr_scale=1
 
-A = cell(30,2);
-B = cell(30,1);
-varA = NaN*ones(30,2);
-varB = NaN*ones(30,1);
+A = cell(28,2);
+B = cell(28,1);
+varA = NaN*ones(28,2);
+varB = NaN*ones(28,1);
 for icont = 1 : 2
     j = 1;
     for iexp = 1 : 3
@@ -69,21 +69,23 @@ varB(varB(:)==0)=NaN;
 X =[varA varB];
 nX = sum(~isnan(X))
 
-hf=figure('Position',[680   500   640   420]);
+hf=figure('Position',[680   500   560   420]);
 model_series = nanmean(X);
 model_error = nanstd(X,0,1)./sqrt(nX);
 h = bar(model_series);
 set(h,'BarWidth',0.4,'FaceColor',[0.91 0.91 0.91]);    % The bars will now touch each other
-set(gca,'XTicklabel','100-100|40-40|100-40')
+set(gca,'TickLabelInterpreter', 'tex');
+set(gca,'XTicklabel',{'f_{100}-f_{100}','f_{40}-f_{40}','f_{100}-f_{40}'})
 hold on;
 errorbar( model_series, model_error, 'k', 'linestyle', 'none','linewidth',2);
 
-set(gca,'FontSize',20);
+set(gca,'FontSize',22,'linewidth',2);
 xlim([0.5 3.5])
 
 box off
 
-[p,table,stats]  = anova1(X)
-[c,m,h,nms] = multcompare(stats,'alpha',1e-15);
+%[p,table,stats]  = anova1(X)
+[p,table,stats] = kruskalwallis(X)
+[c,m,h,nms] = multcompare(stats,'alpha',1e-7);
 
 

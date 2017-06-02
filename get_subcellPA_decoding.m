@@ -143,7 +143,7 @@ for ises = seslist
             
             
 
-            if ~(icont>ds(1) || icomp0>ds(2) || ises>ds(3))             
+            if exist('ds','var') && ~(icont>ds(1) || icomp0>ds(2) || ises>ds(3))             
                 if M0.DEC_M(icont,icomp0,ises)~=0
                     fprintf('ises: %d done.\n',ises);
                     continue;
